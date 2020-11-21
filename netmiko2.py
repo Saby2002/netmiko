@@ -8,13 +8,13 @@ device1 = {
 }
 
 net_connect = ConnectHandler(**device1)
-print(net_connect.find_prompt())
+#print(net_connect.find_prompt())
 
-output = net_connect.send_command("show arp", expect_string=r'#')
-print(output)
+#output = net_connect.send_command("show arp", expect_string=r'#')
+#print(output)
 
 
 net_connect1 = ConnectHandler(**device1)
-output_arp = net_connect1.send_command("show ip int br", expect_string=r'#')
-print(output_arp)
+output = net_connect1.send_command("show ip int br", use_textfsm=True, expect_string=r'#')
+print(output)
 
