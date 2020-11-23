@@ -25,23 +25,13 @@ device3 = {
 }
 
 
-vendors = [device2]
 
-for device in vendors:
-    net_connect = ConnectHandler(**device)
-    cmds = ["show lldp neighbors detail"]
-    for cmd in cmds:
-        output = net_connect.send_command(cmd, use_textfsm=True)
-        
-        
-        
-        pprint(output)
-        
-        
-        print()
-
-        if cmd == "show lldp neighbors":
-            print("LLDP Date Structure Type : {}".format(type(output)))
+net_connect = ConnectHandler(**device2)
+cmds = ["show lldp neighbors detail"]
+for cmd in cmds:
+    output = net_connect.send_command(cmd, use_textfsm=True)
+    print(output)
+   
 
 print()
 

@@ -1,0 +1,215 @@
+R5#
+[{'intf': 'GigabitEthernet0/0', 'ipaddr': '172.29.129.5', 'status': 'up', 'proto': 'up'}, {'intf': 'GigabitEthernet0/1', 'ipaddr': 'unassigned', 'status': 'administratively down', 'proto': 'down'}, {'intf': 'GigabitEthernet0/2', 'ipaddr': '10.3.4.3', 'status': 'down', 'proto': 'down'}, {'intf': 'GigabitEthernet0/3', 'ipaddr': '10.1.3.3', 'status': 'down', 'proto': 'down'}, {'intf': 'Loopback0', 'ipaddr': '3.3.3.3', 'status': 'up', 'proto': 'up'}]
+eve@Linux-Desktop:~/netmiko$ python netmiko_lldp.py 
+Traceback (most recent call last):
+  File "netmiko_lldp.py", line 1, in <module>
+    from netmiko import ConnectHandler
+  File "/home/eve/.local/lib/python2.7/site-packages/netmiko/__init__.py", line 7, in <module>
+    from netmiko.ssh_dispatcher import ConnectHandler
+  File "/home/eve/.local/lib/python2.7/site-packages/netmiko/ssh_dispatcher.py", line 2, in <module>
+    from netmiko.a10 import A10SSH
+  File "/home/eve/.local/lib/python2.7/site-packages/netmiko/a10/__init__.py", line 1, in <module>
+    from netmiko.a10.a10_ssh import A10SSH
+  File "/home/eve/.local/lib/python2.7/site-packages/netmiko/a10/a10_ssh.py", line 3, in <module>
+    from netmiko.cisco_base_connection import CiscoSSHConnection
+  File "/home/eve/.local/lib/python2.7/site-packages/netmiko/cisco_base_connection.py", line 151
+    msg = f"Login failed: {self.host}"
+                                     ^
+SyntaxError: invalid syntax
+eve@Linux-Desktop:~/netmiko$ ping 172.29.129.2
+PING 172.29.129.2 (172.29.129.2) 56(84) bytes of data.
+64 bytes from 172.29.129.2: icmp_seq=1 ttl=255 time=3.68 ms
+64 bytes from 172.29.129.2: icmp_seq=2 ttl=255 time=2.59 ms
+^C
+--- 172.29.129.2 ping statistics ---
+2 packets transmitted, 2 received, 0% packet loss, time 1001ms
+rtt min/avg/max/mdev = 2.594/3.139/3.684/0.545 ms
+eve@Linux-Desktop:~/netmiko$ python3 netmiko_lldp.py 
+[{'local_interface': 'Gi0/1', 'chassis_id': '0299.abbf.0c06', 'neighbor_port_id': 'Gi0/0/0/1', 'neighbor_interface': '', 'neighbor': 'ios', 'system_description': 'Cisco IOS XR Software, Version 6.3.1[Default]', 'capabilities': 'R', 'management_ip': '10.1.2.2', 'vlan': '', 'serial': ''}, {'local_interface': 'Gi0/3', 'chassis_id': '5001.0009.0000', 'neighbor_port_id': 'Gi0/3', 'neighbor_interface': 'GigabitEthernet0/3', 'neighbor': 'R5.cisco.com', 'system_description': 'Cisco IOS Software, IOSv Software (VIOS-ADVENTERPRISEK9-M), Version 15.8(3)M2, RELEASE SOFTWARE (fc2)', 'capabilities': 'R', 'management_ip': '10.1.3.3', 'vlan': '', 'serial': ''}]
+
+eve@Linux-Desktop:~/netmiko$ ipython3 -i netmiko_lldp.py 
+Python 3.6.9 (default, Oct  8 2020, 12:12:24) 
+Type "copyright", "credits" or "license" for more information.
+
+IPython 5.5.0 -- An enhanced Interactive Python.
+?         -> Introduction and overview of IPython's features.
+%quickref -> Quick reference.
+help      -> Python's own help system.
+object?   -> Details about 'object', use 'object??' for extra details.
+[{'local_interface': 'Gi0/1', 'chassis_id': '0299.abbf.0c06', 'neighbor_port_id': 'Gi0/0/0/1', 'neighbor_interface': '', 'neighbor': 'ios', 'system_description': 'Cisco IOS XR Software, Version 6.3.1[Default]', 'capabilities': 'R', 'management_ip': '10.1.2.2', 'vlan': '', 'serial': ''}, {'local_interface': 'Gi0/3', 'chassis_id': '5001.0009.0000', 'neighbor_port_id': 'Gi0/3', 'neighbor_interface': 'GigabitEthernet0/3', 'neighbor': 'R5.cisco.com', 'system_description': 'Cisco IOS Software, IOSv Software (VIOS-ADVENTERPRISEK9-M), Version 15.8(3)M2, RELEASE SOFTWARE (fc2)', 'capabilities': 'R', 'management_ip': '10.1.3.3', 'vlan': '', 'serial': ''}]
+
+
+In [1]: print(output)
+[{'local_interface': 'Gi0/1', 'chassis_id': '0299.abbf.0c06', 'neighbor_port_id': 'Gi0/0/0/1', 'neighbor_interface': '', 'neighbor': 'ios', 'system_description': 'Cisco IOS XR Software, Version 6.3.1[Default]', 'capabilities': 'R', 'management_ip': '10.1.2.2', 'vlan': '', 'serial': ''}, {'local_interface': 'Gi0/3', 'chassis_id': '5001.0009.0000', 'neighbor_port_id': 'Gi0/3', 'neighbor_interface': 'GigabitEthernet0/3', 'neighbor': 'R5.cisco.com', 'system_description': 'Cisco IOS Software, IOSv Software (VIOS-ADVENTERPRISEK9-M), Version 15.8(3)M2, RELEASE SOFTWARE (fc2)', 'capabilities': 'R', 'management_ip': '10.1.3.3', 'vlan': '', 'serial': ''}]
+
+In [2]: for item in output:
+   ...:     for k, v in item.items():
+   ...:         print(f" {k} : {v}")
+   ...:         
+ local_interface : Gi0/1
+ chassis_id : 0299.abbf.0c06
+ neighbor_port_id : Gi0/0/0/1
+ neighbor_interface : 
+ neighbor : ios
+ system_description : Cisco IOS XR Software, Version 6.3.1[Default]
+ capabilities : R
+ management_ip : 10.1.2.2
+ vlan : 
+ serial : 
+ local_interface : Gi0/3
+ chassis_id : 5001.0009.0000
+ neighbor_port_id : Gi0/3
+ neighbor_interface : GigabitEthernet0/3
+ neighbor : R5.cisco.com
+ system_description : Cisco IOS Software, IOSv Software (VIOS-ADVENTERPRISEK9-M), Version 15.8(3)M2, RELEASE SOFTWARE (fc2)
+ capabilities : R
+ management_ip : 10.1.3.3
+ vlan : 
+ serial : 
+
+In [3]: print(output)
+[{'local_interface': 'Gi0/1', 'chassis_id': '0299.abbf.0c06', 'neighbor_port_id': 'Gi0/0/0/1', 'neighbor_interface': '', 'neighbor': 'ios', 'system_description': 'Cisco IOS XR Software, Version 6.3.1[Default]', 'capabilities': 'R', 'management_ip': '10.1.2.2', 'vlan': '', 'serial': ''}, {'local_interface': 'Gi0/3', 'chassis_id': '5001.0009.0000', 'neighbor_port_id': 'Gi0/3', 'neighbor_interface': 'GigabitEthernet0/3', 'neighbor': 'R5.cisco.com', 'system_description': 'Cisco IOS Software, IOSv Software (VIOS-ADVENTERPRISEK9-M), Version 15.8(3)M2, RELEASE SOFTWARE (fc2)', 'capabilities': 'R', 'management_ip': '10.1.3.3', 'vlan': '', 'serial': ''}]
+
+In [4]: for item in output:
+   ...:     for k, v in item.items():
+   ...:         print(f" {k} : {v}")
+   ...:         break
+   ...:     
+ local_interface : Gi0/1
+ local_interface : Gi0/3
+
+In [5]: new_list = []
+
+In [6]: for item in output:
+   ...:     for intf_name, lldp_data in items():
+   ...:         new_entry = {
+   ...:             "intf_name" : intf_name,
+   ...:             "neighbor_port_id": lldp_data['neighbor_port_id']
+   ...:         }
+   ...:         new_list.append(new_entry)
+   ...:         break
+   ...:     
+---------------------------------------------------------------------------
+NameError                                 Traceback (most recent call last)
+<ipython-input-6-2906f9be8f1a> in <module>()
+      1 for item in output:
+----> 2     for intf_name, lldp_data in items():
+      3         new_entry = {
+      4             "intf_name" : intf_name,
+      5             "neighbor_port_id": lldp_data['neighbor_port_id']
+
+NameError: name 'items' is not defined
+
+In [7]: for item in output:
+   ...:     for intf_name, lldp_data in item.items():
+   ...:         new_entry = {
+   ...:             "intf_name" : intf_name,
+   ...:             "neighbor_port_id": lldp_data['neighbor_port_id']
+   ...:         }
+   ...:         new_list.append(new_entry)
+   ...:         break
+   ...:     
+   ...:     
+---------------------------------------------------------------------------
+TypeError                                 Traceback (most recent call last)
+<ipython-input-7-402b50a28337> in <module>()
+      3         new_entry = {
+      4             "intf_name" : intf_name,
+----> 5             "neighbor_port_id": lldp_data['neighbor_port_id']
+      6         }
+      7         new_list.append(new_entry)
+
+TypeError: string indices must be integers
+
+In [8]: for item in output:
+   ...:     for k, v in item.items():
+   ...:         print(f"{k['local_interface']} : {v['neighbor_port_id']}")
+   ...:         
+   ...:     
+   ...:     
+---------------------------------------------------------------------------
+TypeError                                 Traceback (most recent call last)
+<ipython-input-8-bf1facdd5176> in <module>()
+      1 for item in output:
+      2     for k, v in item.items():
+----> 3         print(f"{k['local_interface']} : {v['neighbor_port_id']}")
+      4 
+      5 
+
+TypeError: string indices must be integers
+
+In [9]: for item in output:
+   ...:     for k, v in item.items():
+   ...:         print(f"{k} : {v}")
+   ...:         
+   ...:         
+   ...:     
+   ...:     
+local_interface : Gi0/1
+chassis_id : 0299.abbf.0c06
+neighbor_port_id : Gi0/0/0/1
+neighbor_interface : 
+neighbor : ios
+system_description : Cisco IOS XR Software, Version 6.3.1[Default]
+capabilities : R
+management_ip : 10.1.2.2
+vlan : 
+serial : 
+local_interface : Gi0/3
+chassis_id : 5001.0009.0000
+neighbor_port_id : Gi0/3
+neighbor_interface : GigabitEthernet0/3
+neighbor : R5.cisco.com
+system_description : Cisco IOS Software, IOSv Software (VIOS-ADVENTERPRISEK9-M), Version 15.8(3)M2, RELEASE SOFTWARE (fc2)
+capabilities : R
+management_ip : 10.1.3.3
+vlan : 
+serial : 
+
+In [10]: for item in output:
+    ...:     print(item['local_interface'])
+    ...:     
+Gi0/1
+Gi0/3
+
+In [11]: for item in output:
+    ...:     print(item['local_interface'])
+    ...:     print(item['neighbor_port_id])
+  File "<ipython-input-11-f7feded8f4f2>", line 3
+    print(item['neighbor_port_id])
+                                  ^
+SyntaxError: EOL while scanning string literal
+
+
+In [12]: for item in output:
+    ...:     print(item['local_interface'])
+    ...:     print(item['neighbor_port_id'])
+    ...:     
+Gi0/1
+Gi0/0/0/1
+Gi0/3
+Gi0/3
+
+In [13]: for item in output:
+    ...:     print('#'*80)
+    ...:     print(item['local_interface'])
+    ...:     print(item['neighbor_port_id'])
+    ...:     print('#'*80)
+    ...:     
+################################################################################
+Gi0/1
+Gi0/0/0/1
+################################################################################
+################################################################################
+Gi0/3
+Gi0/3
+################################################################################
+
+In [14]: 
+
+In [14]: 
+
+In [14]: 
+
+In [14]: 
+
